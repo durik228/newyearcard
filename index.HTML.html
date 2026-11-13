@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С Новым 2027 годом!</title>
+<style>
+:root{--night:#071b26;--deep:#102f38;--gold:#ffd36b;--cream:#fff7e7;--red:#d94b42;--green:#1f765b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--cream);font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at 50% 0%,#28535a 0,#102f38 42%,#071b26 100%);overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+#snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.flake{position:absolute;top:-20px;color:#fff;opacity:.8;animation:fall linear infinite;text-shadow:0 0 8px #fff}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.page{display:none;position:relative;z-index:1;min-height:100vh;padding:28px 18px 42px;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+.page.active{display:flex}
+.panel{width:min(900px,100%);padding:clamp(22px,5vw,48px);border:1px solid #f6d58c88;border-radius:28px;background:linear-gradient(145deg,#143b42ed,#09242feF);box-shadow:0 20px 65px #0007;position:relative;overflow:hidden}
+.panel:before{content:"";position:absolute;inset:9px;border:1px solid #f6d58c33;border-radius:20px;pointer-events:none}
+h1,h2{color:var(--gold);margin:0 0 18px;text-shadow:0 3px 18px #ffb52c55}
+h1{font-size:clamp(2.2rem,7vw,4.7rem)}
+h2{font-size:clamp(1.8rem,5vw,3rem)}
+p{font-size:clamp(1.05rem,2.5vw,1.3rem);line-height:1.55}
+.subtitle{color:#f9e7c2}
+input{width:min(420px,100%);padding:15px 18px;border-radius:14px;border:2px solid #e8c36e;background:#fff8e9;color:#24353a;font-size:1.1rem;outline:none;margin:12px 0}
+.btn{border:0;border-radius:999px;padding:13px 23px;margin:8px;background:linear-gradient(135deg,#ffe39a,#e5a83e);color:#3b2911;font-weight:bold;box-shadow:0 5px 0 #9b6426;transition:.18s transform,.18s filter}
+.btn:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #9b6426}
+.btn.secondary{background:linear-gradient(135deg,#f5f0e7,#b8d4cb);box-shadow:0 5px 0 #64877c}
+.menu{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:26px}
+.decor{font-size:clamp(2rem,6vw,4rem);letter-spacing:12px;margin:12px 0;animation:sway 3s ease-in-out infinite alternate}
+@keyframes sway{to{transform:rotate(3deg) scale(1.04)}}
+.goat{font-size:clamp(5rem,16vw,9rem);display:inline-block;filter:drop-shadow(0 0 18px #ff9d35);animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px) rotate(3deg)}}
+.quiz-question{padding:20px 16px;margin:16px 0;border-radius:18px;background:#ffffff0d;border:1px solid #ffffff22;text-align:left}
+.quiz-question h3{margin:0 0 12px;color:#ffe3a1;font-size:1.15rem}
+.option{display:block;margin:8px 0;padding:10px 12px;border-radius:12px;background:#ffffff0d;cursor:pointer}
+.option:hover{background:#ffffff20}
+.option input{width:auto;margin:0 8px 0 0;accent-color:#eab64d}
+#quizResult{font-size:1.2rem;color:#ffe4a0;min-height:28px}
+.gift-area{margin:24px auto;position:relative;width:180px;height:160px}
+.gift{font-size:8rem;line-height:1;filter:drop-shadow(0 8px 12px #0007);animation:giftPulse 1.4s infinite;cursor:pointer;display:inline-block}
+@keyframes giftPulse{50%{transform:scale(1.09) rotate(-4deg)}}
+.santa{font-size:6rem;display:none;animation:pop .7s cubic-bezier(.2,1.7,.5,1)}
+@keyframes pop{from{transform:translateY(70px) scale(.2);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.speech{display:none;background:#fff8e8;color:#392d22;border-radius:18px;padding:14px 18px;margin:12px auto;max-width:320px;font-weight:bold}
+.game-layout{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;margin-top:15px}
+.tree-wrap{min-height:360px;display:flex;align-items:center;justify-content:center;position:relative}
+.tree{font-size:clamp(11rem,25vw,17rem);line-height:1;position:relative;filter:drop-shadow(0 10px 8px #0005)}
+.star{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:2.6rem;z-index:2}
+.ornament{position:absolute;font-size:1.6rem;cursor:pointer;filter:drop-shadow(0 2px 3px #0008);transition:transform .2s}
+.ornament:hover{transform:scale(1.3)}
+.tray{background:#ffffff0c;border:1px solid #ffffff25;border-radius:18px;padding:18px}
+.tray-items{display:flex;justify-content:center;flex-wrap:wrap;gap:13px;margin:16px 0}
+.toy{font-size:2.5rem;cursor:grab;user-select:none;padding:7px;border-radius:12px;background:#ffffff12}
+.toy:active{cursor:grabbing}
+.hint{font-size:.95rem;color:#d8e8df}
+#treeMessage{min-height:26px;color:#ffe3a1}
+footer{margin-top:22px;color:#c4d4cb;font-size:.9rem}
+@media(max-width:650px){.game-layout{grid-template-columns:1fr}.tree-wrap{min-height:300px}.panel{padding:25px 18px}.menu .btn{flex:1 1 100%}}
+</style>
+</head>
+<body>
+<div id="snow" aria-hidden="true"></div>
+
+<section id="welcome" class="page active">
+  <div class="panel">
+    <div class="decor">✨ 🎄 ✨</div>
+    <h1>Новогоднее чудо</h1>
+    <p class="subtitle">Перед тем как открыть праздничную историю, давай познакомимся!</p>
+    <label for="visitorName">Как тебя зовут?</label><br>
+    <input id="visitorName" maxlength="28" placeholder="Введи своё имя" autocomplete="given-name">
+    <br><button class="btn" onclick="startSite()">Далее →</button>
+    <p id="nameError" class="hint" aria-live="polite"></p>
+  </div>
+</section>
+
+<section id="home" class="page">
+  <div class="panel">
+    <div class="decor">🕯️ ✨ 🎄 ✨ 🕯️</div>
+    <div class="goat" aria-label="Огненная коза">🐐</div>
+    <h1>С Новым 2027 годом, <span id="nameGreeting">друг</span>!</h1>
+    <p>Пусть этот год принесёт много радости, смелых идей, тёплых встреч и маленьких чудес. По восточному календарю наступает год <b>Огненной Козы</b> — пусть его энергия вдохновляет на доброе и прекрасное!</p>
+    <div class="decor">🎁 ❄️ 🔔 ❄️ 🎁</div>
+    <h2>Куда отправимся?</h2>
+    <div class="menu">
+      <button class="btn" onclick="showPage('quiz')">🎅 Новогодний тест</button>
+      <button class="btn" onclick="showPage('game')">🎄 Нарядить ёлку</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz" class="page">
+  <div class="panel">
+    <h2>Новогодняя викторина 🎄</h2>
+    <p class="subtitle">Проверь, насколько хорошо ты знаешь новогодние традиции!</p>
+    <form id="quizForm">
+      <div class="quiz-question"><h3>1. Какое животное символизирует 2027 год по восточному календарю?</h3>
+        <label class="option"><input type="radio" name="q1" value="a"> Огненная Коза</label>
+        <label class="option"><input type="radio" name="q1" value="b"> Дракон</label>
+        <label class="option"><input type="radio" name="q1" value="c"> Тигр</label>
+      </div>
+      <div class="quiz-question"><h3>2. Как зовут внучку Деда Мороза?</h3>
+        <label class="option"><input type="radio" name="q2" value="a"> Зима</label>
+        <label class="option"><input type="radio" name="q2" value="b"> Снегурочка</label>
+        <label class="option"><input type="radio" name="q2" value="c"> Метелица</label>
+      </div>
+      <div class="quiz-question"><h3>3. Что обычно загадывают под бой курантов?</h3>
+        <label class="option"><input type="radio" name="q3" value="a"> Желание</label>
+        <label class="option"><input type="radio" name="q3" value="b"> Домашнее задание</label>
+        <label class="option"><input type="radio" name="q3" value="c"> Расписание автобусов</label>
+      </div>
+      <div class="quiz-question"><h3>4. Какое дерево чаще всего украшают к Новому году?</h3>
+        <label class="option"><input type="radio" name="q4" value="a"> Пальму</label>
+        <label class="option"><input type="radio" name="q4" value="b"> Берёзу</label>
+        <label class="option"><input type="radio" name="q4" value="c"> Ель</label>
+      </div>
+      <div class="quiz-question"><h3>5. Что традиционно зажигают на ёлке?</h3>
+        <label class="option"><input type="radio" name="q5" value="a"> Фонарики и гирлянды</label>
+        <label class="option"><input type="radio" name="q5" value="b"> Настольные лампы</label>
+        <label class="option"><input type="radio" name="q5" value="c"> Уличные фонари</label>
+      </div>
+      <button class="btn" type="button" onclick="checkQuiz()">Проверить ответы</button>
+    </form>
+    <p id="quizResult" aria-live="polite"></p>
+    <div id="giftSection" style="display:none">
+      <p>А теперь — заслуженный новогодний сюрприз. Нажми на подарок!</p>
+      <div class="gift-area">
+        <div id="gift" class="gift" role="button" tabindex="0" aria-label="Открыть подарок" onclick="openGift()">🎁</div>
+        <div id="santa" class="santa">🎅</div>
+      </div>
+      <div id="speech" class="speech">Хо-хо-хо, с Новым годом!</div>
+    </div>
+    <div class="menu">
+      <button class="btn secondary" onclick="showPage('home')">← На главную</button>
+      <button class="btn secondary" onclick="showPage('game')">К ёлке →</button>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="page">
+  <div class="panel">
+    <h2>Мастерская новогоднего настроения 🎄</h2>
+    <p class="subtitle">Выбирай украшения и нажимай на ёлку, чтобы повесить их. Укрась её по своему вкусу!</p>
+    <div class="game-layout">
+      <div class="tree-wrap" id="treeArea" onclick="placeOrnament(event)">
+        <div class="tree" id="tree">🎄<span class="star">⭐</span></div>
+      </div>
+      <div class="tray">
+        <h3>Украшения</h3>
+        <div class="tray-items">
+          <span class="toy" onclick="selectToy('🔴')" title="Красный шар">🔴</span>
+          <span class="toy" onclick="selectToy('🔵')" title="Синий шар">🔵</span>
+          <span class="toy" onclick="selectToy('🟡')" title="Золотой шар">🟡</span>
+          <span class="toy" onclick="selectToy('🟣')" title="Фиолетовый шар">🟣</span>
+          <span class="toy" onclick="selectToy('🎀')" title="Бант">🎀</span>
+          <span class="toy" onclick="selectToy('🍬')" title="Конфета">🍬</span>
+          <span class="toy" onclick="selectToy('❄️')" title="Снежинка">❄️</span>
+          <span class="toy" onclick="selectToy('✨')" title="Искорка">✨</span>
+        </div>
+        <p class="hint">Сначала выбери украшение, затем нажми на ёлку.</p>
+        <p id="treeMessage" aria-live="polite">Выбрано: ничего</p>
+        <button class="btn secondary" onclick="resetTree()">Начать заново</button>
+      </div>
+    </div>
+    <div class="menu">
+      <button class="btn secondary" onclick="showPage('home')">← На главную</button>
+      <button class="btn" onclick="showPage('quiz')">Пройти тест →</button>
+    </div>
+  </div>
+</section>
+
+<script>
+const pages=['welcome','home','quiz','game'];
+let visitor='';
+let selectedToy='';
+let decorationCount=0;
+function showPage(id){pages.forEach(p=>document.getElementById(p).classList.toggle('active',p===id));window.scrollTo({top:0,behavior:'smooth'});}
+function startSite(){
+  const value=document.getElementById('visitorName').value.trim();
+  if(!value){document.getElementById('nameError').textContent='Напиши своё имя, чтобы продолжить 🙂';return;}
+  visitor=value;
+  document.getElementById('nameGreeting').textContent=visitor;
+  document.getElementById('nameError').textContent='';
+  showPage('home');
+}
+document.getElementById('visitorName').addEventListener('keydown',e=>{if(e.key==='Enter')startSite();});
+function checkQuiz(){
+  const answers={q1:'a',q2:'b',q3:'a',q4:'c',q5:'a'};
+  let score=0,answered=0;
+  Object.keys(answers).forEach(q=>{const chosen=document.querySelector('input[name="'+q+'"]:checked');if(chosen){answered++;if(chosen.value===answers[q])score++;}});
+  const result=document.getElementById('quizResult');
+  if(answered<5){result.textContent='Ответь на все 5 вопросов — осталось: '+(5-answered)+'.';return;}
+  result.textContent='Твой результат: '+score+' из 5! '+(score===5?'Идеально! Ты настоящий знаток Нового года!':score>=3?'Отлично! Новогоднее настроение на высоте!':'Хорошая попытка! Главное — праздничное настроение!') ;
+  document.getElementById('giftSection').style.display='block';
+}
+function openGift(){
+  document.getElementById('gift').style.display='none';
+  document.getElementById('santa').style.display='block';
+  document.getElementById('speech').style.display='block';
+}
+document.getElementById('gift').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openGift();}});
+function selectToy(toy){selectedToy=toy;document.getElementById('treeMessage').textContent='Выбрано: '+toy+' — нажми на ёлку!';}
+function placeOrnament(event){
+  if(!selectedToy){document.getElementById('treeMessage').textContent='Сначала выбери украшение справа!';return;}
+  const area=document.getElementById('treeArea');
+  const rect=area.getBoundingClientRect();
+  const x=Math.max(18,Math.min(rect.width-28,event.clientX-rect.left));
+  const y=Math.max(24,Math.min(rect.height-24,event.clientY-rect.top));
+  const ornament=document.createElement('span');
+  ornament.className='ornament';ornament.textContent=selectedToy;
+  ornament.style.left=x+'px';ornament.style.top=y+'px';
+  area.appendChild(ornament);
+  decorationCount++;
+  document.getElementById('treeMessage').textContent='Красота! Украшений на ёлке: '+decorationCount+' ✨';
+}
+function resetTree(){
+  document.querySelectorAll('#treeArea .ornament').forEach(el=>el.remove());
+  decorationCount=0;selectedToy='';
+  document.getElementById('treeMessage').textContent='Ёлка снова ждёт украшений!';
+}
+const snow=document.getElementById('snow');
+for(let i=0;i<42;i++){
+  const f=document.createElement('span');f.className='flake';f.textContent=Math.random()>.5?'❄':'•';
+  f.style.left=Math.random()*100+'%';f.style.fontSize=(8+Math.random()*17)+'px';
+  f.style.animationDuration=(7+Math.random()*12)+'s';f.style.animationDelay=(-Math.random()*18)+'s';
+  snow.appendChild(f);
+}
+</script>
+</body>
+</html>
